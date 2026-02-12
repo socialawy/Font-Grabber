@@ -2,6 +2,36 @@
 
 All notable changes to Font Grabber will be documented in this file.
 
+## [1.1.0] - 2026-02-12
+
+### Features
+- ✅ **API Key Management System**
+  - In-app API key dialog for first-time setup
+  - Settings menu with API key configuration (⚙)
+  - Persistent API key storage in config.json
+  - Fallback to environment variable support
+  - Welcome message shows API key status
+- ✅ **Improved User Experience**
+  - Seamless executable usage without manual environment setup
+  - Clear API key status indicators
+  - User-friendly error messages
+- ✅ **Enhanced Security**
+  - No hardcoded API keys in source code
+  - Secure local storage in config.json
+  - Environment variable support for advanced users
+
+#### Technical
+- Updated config.py with API key methods
+- Modified Google Fonts source for key priority
+- Enhanced GUI with API key dialogs
+- Updated documentation with setup instructions
+
+#### Documentation
+- Added in-app setup instructions to START_HERE.md
+- Updated API key workflow documentation
+
+---
+
 ## [1.0.0] - 2026-02-12
 
 ### Initial Release
