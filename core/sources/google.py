@@ -18,9 +18,9 @@ class GoogleFontsSource(FontSource):
         Initialize Google Fonts source.
         
         Args:
-            api_key: Optional API key (can be set via GOOGLE_FONTS_API_KEY env var)
+            api_key: Optional API key (can be set via GOOGLE_FONTS_API_KEY env var or config)
         """
-        self.api_key = api_key or os.getenv("GOOGLE_FONTS_API_KEY")
+        self.api_key = api_key or os.getenv("GOOGLE_FONTS_API_KEY", "")
         self.base_url = "https://www.googleapis.com/webfonts/v1/webfonts"
         self._cache = None
     

@@ -70,3 +70,14 @@ class Config:
     def output_dir(self, value: str):
         """Set output directory."""
         self.set("output_dir", value)
+    
+    def get_google_fonts_api_key(self) -> str:
+        """Get Google Fonts API key."""
+        return self.data.get("api_keys", {}).get("google_fonts", "")
+    
+    def set_google_fonts_api_key(self, api_key: str):
+        """Set Google Fonts API key and save."""
+        if "api_keys" not in self.data:
+            self.data["api_keys"] = {}
+        self.data["api_keys"]["google_fonts"] = api_key
+        self.save()

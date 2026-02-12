@@ -99,16 +99,107 @@ class FontGrabber(ctk.CTk):
         self.results_frame.grid(row=2, column=0, sticky="nsew", padx=20, pady=10)
         
         # Initial message
+        self._check_api_key()
         self._show_welcome_message()
+    
+    def _check_api_key(self):
+        """Check if API key is available and prompt if needed."""
+        api_key = self.config.get_google_fonts_api_key()
+        
+        if not api_key:
+            self._show_api_key_dialog()
+    
+    def _show_api_key_dialog(self):
+        """Show dialog to enter API key."""
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Google Fonts API Key Required")
+        dialog.geometry("400x200")
+        dialog.transient(self)
+        dialog.grab_set()
+        
+        # Center dialog
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (dialog.winfo_width() // 2)
+        y = (dialog.winfo_screenheight() // 2) - (dialog.winfo_height() // 2)
+        dialog.geometry(f"+{x}+{y}")
+        
+        # Instructions
+        instructions = ctk.CTkLabel(
+            dialog,
+            text="🔑 Google Fonts API Key Required\n\n"
+                 "Get your free API key from:\n"
+                 "https://console.cloud.google.com/apis/credentials",
+            font=ctk.CTkFont(size=12),
+            justify="center"
+        )
+        instructions.pack(pady=10)
+        
+        # Input field
+        api_key_var = ctk.StringVar()
+        api_key_entry = ctk.CTkEntry(
+            dialog,
+            textvariable=api_key_var,
+            placeholder_text="Enter your API key here...",
+            width=350,
+            height=35,
+            font=ctk.CTkFont(size=12)
+        )
+        api_key_entry.pack(pady=10)
+        
+        # Buttons
+        button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+        button_frame.pack(pady=10)
+        
+        def save_key():
+            key = api_key_var.get().strip()
+            if key:
+                self.config.set_google_fonts_api_key(key)
+                # Reinitialize manager with new API key
+                self.manager = FontManager(self.config.output_dir, self.config)
+                dialog.destroy()
+                messagebox.showinfo("Success", "API key saved successfully!")
+            else:
+                messagebox.showwarning("Invalid Key", "Please enter a valid API key")
+        
+        save_btn = ctk.CTkButton(
+            button_frame,
+            text="Save API Key",
+            command=save_key,
+            width=120
+        )
+        save_btn.pack(side="left", padx=5)
+        
+        cancel_btn = ctk.CTkButton(
+            button_frame,
+            text="Cancel",
+            command=dialog.destroy,
+            width=120
+        )
+        cancel_btn.pack(side="left", padx=5)
+        
+        # Focus on entry
+        api_key_entry.focus()
+        api_key_entry.bind("<Return>", lambda e: save_key())
     
     def _show_welcome_message(self):
         """Display welcome message in results area."""
+        api_key = self.config.get_google_fonts_api_key()
+        
+        if api_key:
+            welcome_text = "🔍 Search for fonts from Google Fonts\n\n" \
+                         "Type a font name and press Search or Enter"
+            text_color = "gray"
+        else:
+            welcome_text = "🔑 API Key Required\n\n" \
+                         "Click 'Settings' → 'Set API Key' to configure\n" \
+                         "Or set GOOGLE_FONTS_API_KEY environment variable"
+            text_color = "orange"
+        
         welcome = ctk.CTkLabel(
             self.results_frame,
-            text="🔍 Search for fonts from Google Fonts\n\n"
-                 "Type a font name and press Search or Enter",
+            text=welcome_text,
             font=ctk.CTkFont(size=14),
-            text_color="gray"
+            text_color=text_color
         )
         welcome.pack(pady=50)
     
@@ -359,6 +450,32 @@ class SettingsDialog(ctk.CTkToplevel):
         )
         theme_menu.pack(fill="x", padx=10, pady=(0, 10))
         
+        # API Key
+        api_key_frame = ctk.CTkFrame(self)
+        api_key_frame.pack(fill="x", padx=20, pady=10)
+        
+        ctk.CTkLabel(
+            api_key_frame,
+            text="Google Fonts API Key:",
+            font=ctk.CTkFont(size=14, weight="bold")
+        ).pack(anchor="w", padx=10, pady=(10, 5))
+        
+        self.api_key_var = ctk.StringVar(value=self.config.get_google_fonts_api_key())
+        api_key_entry = ctk.CTkEntry(
+            api_key_frame,
+            textvariable=self.api_key_var,
+            placeholder_text="Enter your API key here...",
+            show="*"
+        )
+        api_key_entry.pack(fill="x", padx=10, pady=(0, 10))
+        
+        set_api_key_btn = ctk.CTkButton(
+            api_key_frame,
+            text="Set API Key",
+            command=self._set_api_key_from_settings
+        )
+        set_api_key_btn.pack(pady=10)
+        
         # Buttons
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
         button_frame.pack(fill="x", padx=20, pady=20)
@@ -393,8 +510,13 @@ class SettingsDialog(ctk.CTkToplevel):
         self.config.output_dir = self.dir_var.get()
         self.config.set("theme", self.theme_var.get())
         
+        # Save API key
+        api_key = self.api_key_var.get().strip()
+        if api_key:
+            self.config.set_google_fonts_api_key(api_key)
+        
         # Update parent
-        self.parent.manager.output_dir = Path(self.config.output_dir)
+        self.parent.manager = FontManager(self.config.output_dir, self.config)
         self.parent._update_status(f"Ready | Output: {self.config.output_dir}", "gray")
         
         # Apply theme
@@ -402,6 +524,15 @@ class SettingsDialog(ctk.CTkToplevel):
         
         messagebox.showinfo("Settings Saved", "Settings have been updated successfully")
         self.destroy()
+    
+    def _set_api_key_from_settings(self):
+        """Set API key from settings dialog."""
+        api_key = self.api_key_var.get().strip()
+        if api_key:
+            self.config.set_google_fonts_api_key(api_key)
+            messagebox.showinfo("Success", "API key saved successfully!")
+        else:
+            messagebox.showwarning("Invalid Key", "Please enter a valid API key")
 
 
 def main():

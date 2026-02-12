@@ -19,6 +19,10 @@ Font Grabber is your production-ready tool for grabbing fonts from Google Fonts 
    # macOS/Linux
    export GOOGLE_FONTS_API_KEY=your_api_key_here
    ```
+   
+   **OR use in-app Settings:**
+   - Click ⚙ → "Set API Key" 
+   - Enter your API key when prompted
 
 **Why required:** Google Fonts API now requires authentication for access.
 

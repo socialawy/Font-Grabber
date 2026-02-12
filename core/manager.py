@@ -29,7 +29,12 @@ class FontManager:
         # Google Fonts with API key from config or environment
         api_key = None
         if self.config:
-            api_key = self.config.get("api_keys", {}).get("google_fonts")
+            api_key = self.config.get_google_fonts_api_key()
+        
+        # Fall back to environment variable if config doesn't have it
+        if not api_key:
+            import os
+            api_key = os.getenv("GOOGLE_FONTS_API_KEY")
         
         self.sources.append(GoogleFontsSource(api_key))
     
