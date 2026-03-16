@@ -3,6 +3,10 @@
 ## Project Overview
 Font Grabber is a desktop Python application (using CustomTkinter) designed to search and download fonts from Google Fonts. It uses a plugin architecture for font sources.
 
+## Important Accounts
+- **GitHub Owner**: `socialawy-dev`
+- **Primary Contact**: `ahmed.itc@gmail.com`
+
 ## Tech Stack
 - **Language**: Python 3.8+
 - **UI**: CustomTkinter
