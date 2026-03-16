@@ -1,15 +1,20 @@
-# Font Grabber 🔤
+# 🔤 Font Grabber
 
-A professional, production-ready tool for quickly searching and downloading fonts from Google Fonts. Built for creators who need fonts fast.
+A professional, production-ready desktop tool for quickly searching and downloading fonts from Google Fonts. Designed for creators who need a fast, reliable workflow for managing font assets.
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![GUI](https://img.shields.io/badge/UI-CustomTkinter-blueviolet.svg)](https://github.com/TomSchimansky/CustomTkinter)
 
-✅ **Search 1000+ Google Fonts** with fuzzy matching (handles typos)  
-✅ **One-click downloads** - all font variants automatically  
-✅ **Clean, modern GUI** - dark/light themes  
-✅ **Configurable output** - save fonts where you need them  
-✅ **Plugin architecture** - easily add more font sources later  
-✅ **Environment variable support** - secure API key management  
+---
+
+### **✨ Features**
+
+*   ✅ **Search 1,000+ Google Fonts**: Blazing fast search with fuzzy matching (handles typos).
+*   ✅ **One-Click Downloads**: Automatically grabs all font variants (Regular, Bold, Italic, etc.).
+*   ✅ **Modern GUI**: Clean, responsive interface with Dark and Light mode support.
+*   ✅ **Plugin Architecture**: Easily extendable to add more font sources in the future.
+*   ✅ **Environment Awareness**: Securely handles API keys via environment variables or local config.
 
 ---
 
@@ -44,6 +49,7 @@ A professional, production-ready tool for quickly searching and downloading font
 
 5. **Run the App**
    ```bash
+   # Open terminal/command prompt in the font-grabber folder
    python main.py
    ```
 
@@ -257,7 +263,7 @@ Future enhancements:
 
 ## License
 
-This software is provided as-is for personal and commercial use.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 **Font Licenses:**
 - All fonts from Google Fonts are open-source and free for commercial use
