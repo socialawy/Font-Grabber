@@ -2,7 +2,7 @@ name: Jules Maintenance
 
 on:
   schedule:
-    - cron: '0 */1 * * *' # Run every hour (24 tasks per day per project)
+    - cron: '0 0 * * *' # Run daily at midnight
   workflow_dispatch:
 
 permissions:
